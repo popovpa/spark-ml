@@ -1,11 +1,10 @@
 .DS_Store
 .idea
 .idea/*
-SparkML.ipr
-SparkML.iws
-spark-ml.iml
-spark-ml.ipr
-spark-ml.iws
+*.iml
+*.ipr
+*.iws
 target
 data/*
 data
+tmp

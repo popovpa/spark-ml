@@ -11,14 +11,16 @@ object TextClassificationML  extends App{
 
   val spark = SparkSession.builder.appName("Simple Application").master("local").getOrCreate
   val training = spark.createDataFrame(Seq(
-    (0L, "buy now sale enlarge", 1.0),
-    (0L, "only today your save money", 1.0),
-    (0L, "online shop sale now", 1.0),
-    (0L, "we want to buy you", 0.0),
-    (0L, "we discuss about dealing", 0.0),
-    (0L, "business sale money", 0.0),
-    (0L, "trip money", 2.0)
-  )).toDF("id", "text", "label")
+    ("buy now sale enlarge", 1.0),
+    ("only today your save money", 1.0),
+    ("online shop sale now", 1.0),
+    ("we want to buy you", 0.0),
+    ("we discuss about dealing", 0.0),
+    ("business sale money", 0.0),
+    ("trip money road journey", 2.0),
+    ("road drive journey", 2.0),
+    ("trip money road drive", 2.0)
+  )).toDF("text", "label")
 
   val tokenizer = new Tokenizer()
     .setInputCol("text")
@@ -45,11 +47,11 @@ object TextClassificationML  extends App{
     (4L, "business shop now"),
     (4L, "sale today"),
     (4L, "sale discuss"),
-    (4L, "money trip")
+    (0L, "journey sale trip")
   )).toDF("id", "text")
 
   model.transform(test)
-    .select("id", "text", "probability", "prediction")
+    .select("text", "probability", "prediction")
     .collect()
     .foreach { r =>
       println(s"(${r.getAs("id")}, ${r.getAs("text")}) --> prob=${r.getAs("probability")}, prediction=${r.getAs("prediction")}")
