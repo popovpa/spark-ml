@@ -1,9 +1,9 @@
+import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 import scala.collection.mutable
 import scala.util.parsing.json.{JSON, JSONObject}
-import org.apache.spark.sql.functions.lit
-import org.apache.spark.sql.types.IntegerType
 
 /**
   * Created by pavel.a.popov on 01.12.17.
@@ -28,7 +28,8 @@ object VKPosts {
       .flatMap(json => {
         json.get(0).asInstanceOf[mutable.WrappedArray[String]].map(s => {
           val text = Try {
-            JSON.parseRaw(s).get.asInstanceOf[JSONObject].obj.get("text").asInstanceOf[Option[String]].get
+            val t = JSON.parseRaw(s).get.asInstanceOf[JSONObject].obj.get("text").asInstanceOf[Option[String]].get
+            "text magic text array"//t.replaceAll("\\", "").replaceAll("<br>", " ").replaceAll("/"," ")
           }
           if (text.isSuccess) {
             text.get.trim
